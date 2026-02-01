@@ -4,6 +4,8 @@
 ![License](https://img.shields.io/badge/License-Proprietary-red)
 ![Version](https://img.shields.io/badge/Version-1.0.0-blue)
 
+**🌐 Live Site:** [https://ksf.console.bd](https://ksf.console.bd)
+
 A comprehensive, full-stack web application designed to manage the multifaceted operations of the **Kasimuddin Sarkar Foundation**. This platform digitalizes the foundation's Library Services, Health Camps, Social Welfare programs, and Community Blogs, providing a centralized hub for administrators, staff, and public members.
 
 The system is built for **scale, security, and performance**, leveraging a modern stack with React (Vite) on the frontend and Django Rest Framework (DRF) on the backend, optimized for deployment on DigitalOcean cloud infrastructure.
@@ -98,7 +100,7 @@ The application is architected for a high-performance production environment on 
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/Sadman-Sakib-Sarkar/ks-foundation-production.git
-cd ks-foundation
+cd ks-foundation-production
 ```
 
 ### 2. Backend Setup
@@ -141,4 +143,4 @@ Rename `.env.example` to `.env` in both folders and populate required secrets (D
 
 ---
 
-&copy; 2025-2026 Kasimuddin Sarkar Foundation. All rights reserved.
+&copy; 2025-2026 Kashimuddin Sarkar Foundation. All rights reserved.
