@@ -151,7 +151,7 @@ const AdminBlogEditorPage = () => {
                             theme="snow"
                             value={formData.content}
                             onChange={(value) => setFormData({ ...formData, content: value })}
-                            className="h-full dark:bg-white dark:text-black rounded-lg overflow-hidden flex flex-col"
+                            className="h-full dark:bg-white dark:text-black rounded-lg overflow-hidden flex flex-col [&_.ql-container]:flex-1 [&_.ql-container]:overflow-y-auto [&_.ql-editor]:min-h-[200px]"
                             modules={modules}
                         />
                     </div>
