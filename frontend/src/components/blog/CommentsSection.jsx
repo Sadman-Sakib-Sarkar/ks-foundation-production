@@ -195,7 +195,7 @@ const CommentsSection = ({ postId }) => {
                                                     })}
                                                 </span>
                                                 {canEdit && !isEditing && (
-                                                    <div className="flex items-center gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <div className="flex items-center gap-1">
                                                         <button
                                                             onClick={() => startEditing(comment)}
                                                             className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded text-gray-500 hover:text-blue-500"
