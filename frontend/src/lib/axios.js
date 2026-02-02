@@ -1,9 +1,15 @@
 import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
 
+// FIX: Use the environment variable if available, otherwise fallback to local logic
 const getBaseUrl = () => {
+    // 1. Check if VITE_API_URL is set (from GitHub Actions / .env)
+    if (import.meta.env.VITE_API_URL) {
+        return `${import.meta.env.VITE_API_URL}`;
+    }
+    
+    // 2. Fallback for local development (localhost)
     const hostname = window.location.hostname;
-    // backend is assumed to be on port 8000 on the same host
     return `http://${hostname}:8000/api`;
 };
 
@@ -37,9 +43,9 @@ api.interceptors.response.use(
             // Clear token
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
-            useAuthStore.getState().logout(); // If store is available outside hook
+            useAuthStore.getState().logout();
 
-            // Redirect to login or just refresh page to clear state
+            // Redirect to login
             window.location.href = '/login';
             return Promise.reject(error);
         }
