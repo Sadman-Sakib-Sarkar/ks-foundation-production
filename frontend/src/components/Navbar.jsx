@@ -10,15 +10,46 @@ const Navbar = () => {
     const [isProjectsOpen, setIsProjectsOpen] = useState(false);
     const location = useLocation();
 
+    // Dropdown states for desktop
+    const [activeDropdown, setActiveDropdown] = React.useState(null);
+    const projectsDropdownRef = React.useRef(null);
+    const profileDropdownRef = React.useRef(null);
+
     // Close menu on route change
     React.useEffect(() => {
         setIsMenuOpen(false);
         setIsProjectsOpen(false);
+        setActiveDropdown(null);
     }, [location]);
+
+    // Handle clicking outside to close dropdowns
+    React.useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (activeDropdown === 'projects' && projectsDropdownRef.current && !projectsDropdownRef.current.contains(event.target)) {
+                setActiveDropdown(null);
+            }
+            if (activeDropdown === 'profile' && profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+                setActiveDropdown(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [activeDropdown]);
 
     if (isLoading) return null; // Prevent flickering while restoring session
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+    const toggleDropdown = (name) => {
+        if (activeDropdown === name) {
+            setActiveDropdown(null);
+        } else {
+            setActiveDropdown(name);
+        }
+    };
 
     return (
         <>
@@ -34,11 +65,14 @@ const Navbar = () => {
                         <div className="hidden md:flex items-center space-x-8">
                             <Link to="/" className="text-gray-700 dark:text-gray-200 hover:text-blue-500 font-medium transition-colors">Home</Link>
 
-                            <div className="relative group">
-                                <button className="flex items-center gap-1 text-gray-700 dark:text-gray-200 hover:text-blue-500 font-medium py-2">
-                                    Projects <ChevronDown size={16} />
+                            <div className="relative" ref={projectsDropdownRef}>
+                                <button 
+                                    onClick={() => toggleDropdown('projects')}
+                                    className={`flex items-center gap-1 text-gray-700 dark:text-gray-200 hover:text-blue-500 font-medium py-2 ${activeDropdown === 'projects' ? 'text-blue-500' : ''}`}
+                                >
+                                    Projects <ChevronDown size={16} className={`transition-transform duration-200 ${activeDropdown === 'projects' ? 'rotate-180' : ''}`} />
                                 </button>
-                                <div className="absolute top-full left-0 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-left -translate-y-2 group-hover:translate-y-0">
+                                <div className={`absolute top-full left-0 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-200 transform origin-top-left ${activeDropdown === 'projects' ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
                                     <Link to="/library" className="block px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:text-gray-200 text-sm">KS Library</Link>
                                     <Link to="/health" className="block px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:text-gray-200 text-sm">Health and Wellbeing</Link>
                                     <Link to="/community-support" className="block px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:text-gray-200 text-sm">Community Support</Link>
@@ -54,8 +88,11 @@ const Navbar = () => {
                             <ThemeToggle />
 
                             {isAuthenticated ? (
-                                <div className="relative group pl-2">
-                                    <button className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-full transition-colors">
+                                <div className="relative pl-2" ref={profileDropdownRef}>
+                                    <button 
+                                        onClick={() => toggleDropdown('profile')}
+                                        className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-full transition-colors"
+                                    >
                                         <div className="w-8 h-8 rounded-full overflow-hidden bg-blue-100 dark:bg-blue-900 border border-blue-200 dark:border-blue-700">
                                             {user?.profile_picture ? (
                                                 <img src={user.profile_picture} alt="Profile" className="w-full h-full object-cover" />
@@ -66,10 +103,10 @@ const Navbar = () => {
                                         <span className="text-sm font-semibold dark:text-white hidden lg:block">
                                             {user?.first_name || 'User'}
                                         </span>
-                                        <ChevronDown size={14} className="text-gray-500" />
+                                        <ChevronDown size={14} className={`text-gray-500 transition-transform duration-200 ${activeDropdown === 'profile' ? 'rotate-180' : ''}`} />
                                     </button>
 
-                                    <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                    <div className={`absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-200 z-50 ${activeDropdown === 'profile' ? 'opacity-100 visible transform translate-y-0' : 'opacity-0 invisible transform -translate-y-2'}`}>
                                         <div className="p-3 border-b border-gray-100 dark:border-gray-700">
                                             <p className="font-semibold text-gray-900 dark:text-white truncate">{user?.first_name} {user?.last_name}</p>
                                             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
