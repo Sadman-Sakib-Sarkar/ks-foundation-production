@@ -294,40 +294,42 @@ const LibraryPage = () => {
                     <div className="no-print">
                         {viewMode === 'list' ? (
                             <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border border-gray-100 dark:border-gray-700">
-                                <table className="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr className="bg-gray-100 dark:bg-gray-900/50 border-b dark:border-gray-700">
-                                            <th className="p-4 font-semibold text-gray-600 dark:text-gray-300">Serial</th>
-                                            <th className="p-4 font-semibold text-gray-600 dark:text-gray-300">Title</th>
-                                            <th className="p-4 font-semibold text-gray-600 dark:text-gray-300">Author</th>
-                                            <th className="p-4 font-semibold text-gray-600 dark:text-gray-300">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {filteredBooks.map((book) => (
-                                            <tr key={book.id} onClick={() => setSelectedBook(book)} className="border-b dark:border-gray-700 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
-                                                <td className="p-4 dark:text-gray-300 font-mono text-sm">{book.serial_number}</td>
-                                                <td className="p-4 font-medium sticky left-0 bg-white dark:bg-gray-800 md:static dark:text-white">
-                                                    <div className="flex items-center gap-3">
-                                                        {book.cover_image && (
-                                                            <img src={book.cover_image} alt="" className="w-8 h-10 object-cover rounded shadow-sm hidden sm:block" />
-                                                        )}
-                                                        <div>
-                                                            <div>{book.title}</div>
-                                                            {book.bengali_title && <div className="text-xs text-gray-500">{book.bengali_title}</div>}
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="p-4 dark:text-gray-300">{book.author}</td>
-                                                <td className="p-4">
-                                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${book.is_available ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'}`}>
-                                                        {book.is_available ? 'Available' : 'Out'}
-                                                    </span>
-                                                </td>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left border-collapse whitespace-nowrap">
+                                        <thead>
+                                            <tr className="bg-gray-100 dark:bg-gray-900/50 border-b dark:border-gray-700">
+                                                <th className="p-4 font-semibold text-gray-600 dark:text-gray-300">Serial</th>
+                                                <th className="p-4 font-semibold text-gray-600 dark:text-gray-300">Title</th>
+                                                <th className="p-4 font-semibold text-gray-600 dark:text-gray-300 hidden md:table-cell">Author</th>
+                                                <th className="p-4 font-semibold text-gray-600 dark:text-gray-300">Status</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {filteredBooks.map((book) => (
+                                                <tr key={book.id} onClick={() => setSelectedBook(book)} className="border-b dark:border-gray-700 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
+                                                    <td className="p-4 dark:text-gray-300 font-mono text-sm">{book.serial_number}</td>
+                                                    <td className="p-4 font-medium sticky left-0 bg-white dark:bg-gray-800 md:static dark:text-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] md:shadow-none">
+                                                        <div className="flex items-center gap-3">
+                                                            {book.cover_image && (
+                                                                <img src={book.cover_image} alt="" className="w-8 h-10 object-cover rounded shadow-sm hidden sm:block" />
+                                                            )}
+                                                            <div>
+                                                                <div>{book.title}</div>
+                                                                {book.bengali_title && <div className="text-xs text-gray-500">{book.bengali_title}</div>}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="p-4 dark:text-gray-300 hidden md:table-cell">{book.author}</td>
+                                                    <td className="p-4">
+                                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${book.is_available ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'}`}>
+                                                            {book.is_available ? 'Available' : 'Out'}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         ) : (
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
