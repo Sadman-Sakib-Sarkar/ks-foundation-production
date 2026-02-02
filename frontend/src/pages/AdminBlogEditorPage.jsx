@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import ImageResize from 'quill-image-resize-module-react';
+import ImageResize from '@mgreminger/quill-image-resize-module';
 
 ReactQuill.Quill.register('modules/imageResize', ImageResize);
 
@@ -89,7 +89,6 @@ const AdminBlogEditorPage = () => {
             ['clean']
         ],
         imageResize: {
-            parchment: ReactQuill.Quill.import('parchment'),
             modules: ['Resize', 'DisplaySize']
         }
     };
