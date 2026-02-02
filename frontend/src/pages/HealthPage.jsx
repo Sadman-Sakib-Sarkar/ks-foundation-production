@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../lib/axios';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/Card';
-import { Calendar, MapPin, User, X } from 'lucide-react';
+import { Calendar, MapPin, User, X, CalendarOff } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from '../components/ui/Button';
 
@@ -92,10 +92,18 @@ const HealthPage = () => {
             <section>
                 <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Upcoming Health Camps</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {upcomingCamps.length > 0 ? upcomingCamps.map(camp => (
-                        <CampCard key={camp.id} camp={camp} isUpcoming onClick={() => setSelectedCamp(camp)} />
-                    )) : (
-                        <p className="text-gray-500 dark:text-gray-400">No upcoming camps scheduled.</p>
+                    {upcomingCamps.length > 0 ? (
+                        upcomingCamps.map(camp => (
+                            <CampCard key={camp.id} camp={camp} isUpcoming onClick={() => setSelectedCamp(camp)} />
+                        ))
+                    ) : (
+                        <Card className="col-span-full py-12 flex flex-col items-center justify-center text-center bg-gray-50 dark:bg-gray-800 border-dashed border-2 border-gray-200 dark:border-gray-700 shadow-none">
+                            <CalendarOff size={48} className="text-gray-300 dark:text-gray-600 mb-4" />
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">No Upcoming Health Camps</h3>
+                            <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                                We are currently planning our next health camp. Please check back later or follow our announcements for updates.
+                            </p>
+                        </Card>
                     )}
                 </div>
                 {upcomingNextPage && (
@@ -110,10 +118,15 @@ const HealthPage = () => {
             <section>
                 <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Past Camps Gallery</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {pastCamps.length > 0 ? pastCamps.map(camp => (
-                        <CampCard key={camp.id} camp={camp} isPast onClick={() => setSelectedCamp(camp)} />
-                    )) : (
-                        <p className="text-gray-500 dark:text-gray-400">No past camps found.</p>
+                    {pastCamps.length > 0 ? (
+                        pastCamps.map(camp => (
+                            <CampCard key={camp.id} camp={camp} isPast onClick={() => setSelectedCamp(camp)} />
+                        ))
+                    ) : (
+                        <Card className="col-span-full py-12 flex flex-col items-center justify-center text-center bg-gray-50 dark:bg-gray-800 border-dashed border-2 border-gray-200 dark:border-gray-700 shadow-none">
+                            <CalendarOff size={48} className="text-gray-300 dark:text-gray-600 mb-4" />
+                            <p className="text-gray-500 dark:text-gray-400">No past health camps to display yet.</p>
+                        </Card>
                     )}
                 </div>
                 {pastNextPage && (
