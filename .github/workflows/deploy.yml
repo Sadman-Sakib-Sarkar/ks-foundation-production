@@ -20,7 +20,7 @@ jobs:
       run: |
         cd frontend
         npm install
-        # Injecting environment variables for the build
+        # Injecting environment variables for the build (use https in production)
         VITE_API_URL=${{ secrets.VITE_API_URL }} VITE_RECAPTCHA_SITE_KEY=${{ secrets.VITE_RECAPTCHA_SITE_KEY }} npm run build
 
     # 2. COPY FILES TO VPS
