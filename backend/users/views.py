@@ -36,6 +36,10 @@ class UserListView(generics.ListAPIView):
         role = self.request.query_params.get('role')
         if role:
             queryset = queryset.filter(role=role.upper())
+
+        is_staff_applicant = self.request.query_params.get('is_staff_applicant')
+        if is_staff_applicant == 'true':
+            queryset = queryset.filter(is_staff_applicant=True)
             
         return queryset
 
@@ -236,6 +240,7 @@ class ToggleStaffRoleView(APIView):
                 # Approve pending staff
                 user.is_approved_staff = True
                 user.is_staff = True
+                user.is_staff_applicant = False # Clear applicant flag
             elif user.role == 'STAFF':
                 # Demote approved staff to USER
                 user.role = 'USER'
@@ -245,6 +250,7 @@ class ToggleStaffRoleView(APIView):
                 user.role = 'STAFF'
                 user.is_staff = True
                 user.is_approved_staff = True
+                user.is_staff_applicant = False # Clear applicant flag
             
             user.save()
             return Response(UserSerializer(user).data)

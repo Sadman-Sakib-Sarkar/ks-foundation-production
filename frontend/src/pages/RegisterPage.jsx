@@ -30,7 +30,11 @@ const RegisterPage = () => {
         try {
             await api.post(endpoint, formData);
             setSubmitted(true);
-            toast.success('Registration successful!');
+            if (isStaff) {
+                toast.success('Registration successful! Please wait for Admin approval.');
+            } else {
+                toast.success('Registration successful!');
+            }
         } catch (error) {
             const data = error.response?.data;
             if (data?.password) {

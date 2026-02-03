@@ -38,9 +38,10 @@ class StaffRegistrationSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', '')
         )
-        user.role = 'STAFF'
+        user.role = 'USER'  # Security Fix: Default to USER
         user.is_verified = False
         user.is_approved_staff = False
+        user.is_staff_applicant = True # Flag as applicant
         user.save()
         return user
 
@@ -71,7 +72,7 @@ class SetNewPasswordSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'email', 'first_name', 'last_name', 'role', 'is_verified', 'is_approved_staff', 
+        fields = ('id', 'email', 'first_name', 'last_name', 'role', 'is_verified', 'is_approved_staff', 'is_staff_applicant',
                   'village_street', 'upazilla', 'district', 'division', 'country', 'mobile_number', 'profile_picture', 'is_superuser')
         read_only_fields = ('email', 'is_verified', 'is_approved_staff', 'is_superuser')
 

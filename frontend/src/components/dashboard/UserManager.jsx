@@ -27,7 +27,12 @@ const UserManager = () => {
         try {
             let url = `/auth/manage/?`;
             if (query) url += `search=${query}&`;
-            if (role) url += `role=${role}&`;
+
+            if (role === 'APPLICANT') {
+                url += `is_staff_applicant=true&`;
+            } else if (role) {
+                url += `role=${role}&`;
+            }
 
             const response = await api.get(url);
 
@@ -133,6 +138,7 @@ const UserManager = () => {
                             <option value="ADMIN">Admin</option>
                             <option value="STAFF">Staff</option>
                             <option value="USER">User</option>
+                            <option value="APPLICANT">Staff Applicants</option>
                         </select>
                     </div>
 
@@ -191,8 +197,10 @@ const UserManager = () => {
                                                         u.is_approved_staff ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
                                                             : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300'
                                                     ) :
-                                                        'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                                {u.role === 'STAFF' && !u.is_approved_staff ? 'PENDING STAFF' : u.role}
+                                                        u.is_staff_applicant ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-700' :
+                                                            'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'}`}>
+                                                {u.role === 'STAFF' && !u.is_approved_staff ? 'PENDING STAFF' :
+                                                    u.is_staff_applicant ? 'STAFF APPLICANT' : u.role}
                                             </span>
                                         </td>
                                         <td className="p-4 flex items-center gap-2">
@@ -201,7 +209,8 @@ const UserManager = () => {
                                                     <button
                                                         onClick={() => toggleStaffRole(u.id)}
                                                         disabled={actionLoading === u.id}
-                                                        title={u.role === 'STAFF' ? (u.is_approved_staff ? 'Revoke Staff' : 'Approve Staff') : 'Promote to Staff'}
+                                                        title={u.role === 'STAFF' ? (u.is_approved_staff ? 'Revoke Staff' : 'Approve Staff') :
+                                                            u.is_staff_applicant ? 'Approve Staff Application' : 'Promote to Staff'}
                                                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
                                                             ${u.role === 'STAFF' && u.is_approved_staff ? 'bg-blue-600' :
                                                                 u.role === 'STAFF' && !u.is_approved_staff ? 'bg-orange-400' : 'bg-gray-200 dark:bg-gray-600'}`}
